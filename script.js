@@ -8,8 +8,8 @@ const questions = ["What is the capital city of India?",
     "What is the national animal of India?",
     // Add more questions here...
     "Which Indian state is known as the 'Land of Five Rivers'?"]; // Add your questions here
-const answers = ["New Delhi",
-    "The Ganges",
+
+const answers = ["New Delhi","The Ganges",
     "Mahatma Gandhi",
     "Bangalore",
     "Tiger",
