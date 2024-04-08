@@ -1,4 +1,8 @@
-const questions = [
+const questions = ["Which is the capital city of Kerala?",
+            "What is the official language of Kerala?",
+            "Which is the dance form of Kerala?",
+            "Who is known as the Father of the Nation in Kerala?",
+            "What is the famous backwater destination in Kerala?"
     // Add your 50 questions here
 ];
 
@@ -12,7 +16,12 @@ function displayQuestion() {
 
 function checkAnswer() {
     const userAnswer = document.getElementById("answer").value.trim().toLowerCase();
-    const correctAnswer = ""; // Add the correct answer for each question here
+    const correctAnswer = "Thiruvananthapuram",
+            "Malayalam",
+            "Kathakali",
+            "Ayyankali",
+            "Alappuzha"
+             // Add the correct answer for each question here
 
     const resultDiv = document.getElementById("result");
     if (userAnswer === correctAnswer) {
