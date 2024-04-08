@@ -12,38 +12,6 @@
     </header>
     <main>
         <div id="question">
-        
-            
-        </div>
-        <input type="text" id="answer" placeholder="Your Answer">
-        <button onclick="checkAnswer()">Submit</button>
-        <div id="result">
-            
-        </div>
-        <div id="score">
-            Score: <span id="scoreValue">0</span>/50
-        </div>
-    </main>
-    <script src="quiz.js"></script>
-</body>
-</html>
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kerala Quiz</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <h1>Kerala Quiz</h1>
-    </header>
-    <main>
-        <div id="question">
             <!-- Question will be displayed here -->
         </div>
         <input type="text" id="answer" placeholder="Your Answer">
@@ -52,32 +20,9 @@
             <!-- Result will be displayed here -->
         </div>
         <div id="score">
-            Score: <span id="scoreValue">0</span>/5 <!-- Updated to reflect the number of questions -->
+            Score: <span id="scoreValue">0</span>/50
         </div>
     </main>
     <script src="quiz.js"></script>
-    <script>
-        // Sample questions and answers
-        const questions = [
-            "Which is the capital city of Kerala?",
-            "What is the official language of Kerala?",
-            "Which is the dance form of Kerala?",
-            "Who is known as the Father of the Nation in Kerala?",
-            "What is the famous backwater destination in Kerala?"
-        ];
-
-        const answers = [
-            "Thiruvananthapuram",
-            "Malayalam",
-            "Kathakali",
-            "Ayyankali",
-            "Alappuzha"
-        ];
-
-        // Display first question when the page loads
-        window.onload = function() {
-            displayQuestion();
-        };
-    </script>
 </body>
 </html>
