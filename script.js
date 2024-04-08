@@ -1,8 +1,20 @@
 let timer;
 let timeRemaining = 60; // Timer set to 60 seconds
 let score = 0;
-const questions = ["Question 1?", "Question 2?", "Question 3?"]; // Add your questions here
-const answers = ["answer1", "answer2", "answer3"]; // Add corresponding answers here
+const questions = ["What is the capital city of India?",
+    "Which river is known as the 'Ganga' in India?",
+    "Who is known as the Father of the Nation in India?",
+    "Which Indian city is known as the Silicon Valley of India?",
+    "What is the national animal of India?",
+    // Add more questions here...
+    "Which Indian state is known as the 'Land of Five Rivers'?"]; // Add your questions here
+const answers = ["New Delhi",
+    "The Ganges",
+    "Mahatma Gandhi",
+    "Bangalore",
+    "Tiger",
+    // Add corresponding answers here...
+    "Punjab"]; // Add corresponding answers here
 
 function startTimer() {
     timer = setInterval(() => {
