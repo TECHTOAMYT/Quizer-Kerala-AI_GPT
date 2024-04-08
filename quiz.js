@@ -1,43 +1,49 @@
-const questions = ["Which is the capital city of Kerala?",
-            "What is the official language of Kerala?",
-            "Which is the dance form of Kerala?",
-            "Who is known as the Father of the Nation in Kerala?",
-            "What is the famous backwater destination in Kerala?"
-    // Add your 50 questions here
-];
-
-let currentQuestionIndex = 0;
+let timer;
+let timeRemaining = 60; // Timer set to 60 seconds
 let score = 0;
+const questions = ["Question 1?", "Question 2?", "Question 3?"]; // Add your questions here
+const answers = ["answer1", "answer2", "answer3"]; // Add corresponding answers here
 
-function displayQuestion() {
-    const questionDiv = document.getElementById("question");
-    questionDiv.textContent = questions[currentQuestionIndex];
+function startTimer() {
+    timer = setInterval(() => {
+        timeRemaining--;
+        document.getElementById("time").textContent = timeRemaining;
+        if (timeRemaining === 0) {
+            clearInterval(timer);
+            endQuiz();
+        }
+    }, 1000);
 }
 
 function checkAnswer() {
-    const userAnswer = document.getElementById("answer").value.trim().toLowerCase();
-    const correctAnswer = "Thiruvananthapuram",
-            "Malayalam",
-            "Kathakali",
-            "Ayyankali",
-            "Alappuzha"
-             // Add the correct answer for each question here
+    const userAnswer = document.getElementById("answer").value;
+    const currentQuestion = questions.shift();
+    const correctAnswer = answers.shift();
 
-    const resultDiv = document.getElementById("result");
-    if (userAnswer === correctAnswer) {
-        resultDiv.textContent = "Correct!";
+    if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
         score++;
-    } else {
-        resultDiv.textContent = `Incorrect! The correct answer is: ${correctAnswer}`;
+        document.getElementById("scoreValue").textContent = score;
     }
 
-    document.getElementById("scoreValue").textContent = score;
-    currentQuestionIndex++;
-    if (currentQuestionIndex < questions.length) {
-        displayQuestion();
+    if (questions.length === 0) {
+        clearInterval(timer);
+        endQuiz();
     } else {
-        alert(`Quiz completed! Your final score is: ${score}/50`);
+        document.getElementById("question").textContent = questions[0];
+        document.getElementById("answer").value = "";
     }
 }
 
-displayQuestion();
+function endQuiz() {
+    const resultDiv = document.getElementById("result");
+    resultDiv.textContent = `Quiz ended. Your score: ${score}`;
+
+    if (score >= 2) {
+        resultDiv.textContent += " Pass!";
+    } else {
+        resultDiv.textContent += " Fail!";
+    }
+}
+
+document.getElementById("question").textContent = questions[0];
+startTimer();
