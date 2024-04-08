@@ -1,5 +1,15 @@
 body {
     font-family: Arial, sans-serif;
+    color: #fff; /* Adjust text color */
+    background-image: url('animated_background.gif'); /* Add your animated background image */
+    background-size: cover;
+    background-repeat: no-repeat;
+    animation: backgroundAnimation 10s infinite alternate; /* Add animation to background */
+}
+
+@keyframes backgroundAnimation {
+    0% { background-position: 0 0; }
+    100% { background-position: 100% 100%; }
 }
 
 .container {
@@ -12,6 +22,16 @@ button {
     padding: 10px 20px;
     margin-top: 10px;
     cursor: pointer;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+    transition-duration: 0.4s; /* Add transition effect */
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green */
 }
 
 #result {
