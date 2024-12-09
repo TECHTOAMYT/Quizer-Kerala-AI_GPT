@@ -145,6 +145,12 @@
             }
         }
 
+        /* Scoreboard */
+        .score-board {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -179,6 +185,11 @@
         <!-- Light Indicator and Sad Emoji -->
         <div class="light-indicator" id="light-indicator"></div>
         <div class="sad-emoji" id="sad-emoji">😢</div>
+
+        <!-- Scoreboard -->
+        <div class="score-board">
+            Score: <span id="score-display">0</span>/25
+        </div>
     </div>
 
     <!-- End Page -->
@@ -218,6 +229,7 @@
         const analogHand = document.getElementById('analog-hand');
         const questionNumber = document.getElementById('question-number');
         const finalScore = document.getElementById('final-score');
+        const scoreDisplay = document.getElementById('score-display');
         const lightIndicator = document.getElementById('light-indicator');
         const sadEmoji = document.getElementById('sad-emoji');
 
@@ -226,6 +238,7 @@
         function startQuiz() {
             currentQuestion = 0;
             score = 0;
+            scoreDisplay.textContent = score;
             welcomePage.classList.remove('active');
             quizPage.classList.add('active');
             loadQuestion();
@@ -271,6 +284,7 @@
                 lightIndicator.classList.add('green-light');
                 lightIndicator.classList.remove('red-light');
                 score++;
+                scoreDisplay.textContent = score;
                 setTimeout(() => lightIndicator.style.display = 'none', 500);
             } else {
                 lightIndicator.classList.add('red-light');
