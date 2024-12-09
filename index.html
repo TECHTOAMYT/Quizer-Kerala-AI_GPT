@@ -225,124 +225,125 @@
     { question: "ഇന്ത്യയിലെ ഏറ്റവും ഉയരമുള്ള കൊടുമുടി ഏതാണ്?", options: ["കഞ്ചൻജംഗ", "എവറസ്റ്റ്", "അൻനപുര്ണ", "ലോട്ട്സെ"], correct: 0 },
     { question: "ഇന്ത്യയുടെ ദേശീയ കായികം ഏതാണ്?", options: ["ഹോക്കി", "ക്രിക്കറ്റ്", "ഫുട്ബോൾ", "കബഡി"], correct: 0 },
     { question: "കേരളത്തിൽ സാക്ഷരത നേടിയ ആദ്യ ജില്ല ഏതാണ്?", options: ["എറണാകുളം", "കോഴിക്കോട്", "തിരുവനന്തപുരം", "ആലപ്പുഴ"], correct: 0 },
-    { question: "കേരളത്തിലെ ആദ്യ മുഖ്യമന്ത്രി ആരായിരുന്നു?", options: ["ഇ.എം.എസ്. നമ്പൂതിരിപ്പാട്", "കെ. കരുണാകരൻ", "എ.കെ. ആന്റണി", "പിണറായി വിജയൻ"], correct: 0 },
+   
     // Add more questions as required to make up to 100
 ];
-     
 
         let currentQuestion = 0;
-        let score = 0;
-        let timerInterval;
+    let score = 0;
+    let timerInterval;
 
-        const welcomePage = document.querySelector('.welcome-page');
-        const quizPage = document.querySelector('.quiz-page');
-        const endPage = document.querySelector('.end-page');
+    const welcomePage = document.querySelector('.welcome-page');
+    const quizPage = document.querySelector('.quiz-page');
+    const endPage = document.querySelector('.end-page');
 
-        const startQuizButton = document.getElementById('start-quiz');
-        const restartQuizButton = document.getElementById('restart-quiz');
+    const startQuizButton = document.getElementById('start-quiz');
+    const restartQuizButton = document.getElementById('restart-quiz');
 
-        const questionText = document.getElementById('question-text');
-        const answersContainer = document.getElementById('answers-container');
-        const timerDisplay = document.getElementById('timer-display');
-        const analogHand = document.getElementById('analog-hand');
-        const questionNumber = document.getElementById('question-number');
-        const finalScore = document.getElementById('final-score');
-        const scoreDisplay = document.getElementById('score-display');
-        const lightIndicator = document.getElementById('light-indicator');
-        const sadEmoji = document.getElementById('sad-emoji');
+    const questionText = document.getElementById('question-text');
+    const answersContainer = document.getElementById('answers-container');
+    const timerDisplay = document.getElementById('timer-display');
+    const analogHand = document.getElementById('analog-hand');
+    const questionNumber = document.getElementById('question-number');
+    const finalScore = document.getElementById('final-score');
+    const scoreDisplay = document.getElementById('score-display');
+    const lightIndicator = document.getElementById('light-indicator');
+    const sadEmoji = document.getElementById('sad-emoji');
 
-        function shuffleArray(arr) {
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+    }
+
+    function startQuiz() {
+        currentQuestion = 0;
+        score = 0;
+        scoreDisplay.textContent = score;
+        shuffleArray(questions); // Shuffle the question order here.
+        welcomePage.classList.remove('active');
+        quizPage.classList.add('active');
+        loadQuestion();
+    }
+
+    function endQuiz() {
+        quizPage.classList.remove('active');
+        endPage.classList.add('active');
+        finalScore.textContent = `Your Score: ${score}/${questions.length}`;
+    }
+
+    function restartQuiz() {
+        endPage.classList.remove('active');
+        welcomePage.classList.add('active');
+    }
+
+    function loadQuestion() {
+        if (currentQuestion >= questions.length) {
+            endQuiz();
+            return;
         }
 
-        function startQuiz() {
-            currentQuestion = 0;
-            score = 0;
+        const q = questions[currentQuestion];
+        questionText.textContent = q.question;
+        answersContainer.innerHTML = '';
+        questionNumber.textContent = `Question ${currentQuestion + 1}/${questions.length}`;
+
+        let shuffledOptions = [...q.options];
+        shuffleArray(shuffledOptions);
+
+        shuffledOptions.forEach((option, index) => {
+            const button = document.createElement('button');
+            button.textContent = String.fromCharCode(97 + index) + ". " + option;
+            button.onclick = () => checkAnswer(index === shuffledOptions.indexOf(q.options[q.correct]));
+            answersContainer.appendChild(button);
+        });
+
+        startTimer();
+    }
+
+    function checkAnswer(correct) {
+        clearInterval(timerInterval);
+        lightIndicator.style.display = 'block';
+
+        if (correct) {
+            lightIndicator.classList.add('green-light');
+            lightIndicator.classList.remove('red-light');
+            score++;
             scoreDisplay.textContent = score;
-            welcomePage.classList.remove('active');
-            quizPage.classList.add('active');
-            loadQuestion();
+            setTimeout(() => lightIndicator.style.display = 'none', 500);
+        } else {
+            lightIndicator.classList.add('red-light');
+            lightIndicator.classList.remove('green-light');
+            sadEmoji.style.display = 'inline-block';
+            setTimeout(() => sadEmoji.style.display = 'none', 1000);
+            setTimeout(() => lightIndicator.style.display = 'none', 1000);
         }
 
-        function endQuiz() {
-            quizPage.classList.remove('active');
-            endPage.classList.add('active');
-            finalScore.textContent = `Your Score: ${score}/25`;
-        }
+        currentQuestion++;
+        loadQuestion();
+    }
 
-        function restartQuiz() {
-            endPage.classList.remove('active');
-            welcomePage.classList.add('active');
-        }
+    function startTimer() {
+        let timeLeft = 25;
+        timerDisplay.textContent = timeLeft;
+        analogHand.style.transform = `rotate(0deg)`;
 
-        function loadQuestion() {
-            if (currentQuestion >= 25) {
-                endQuiz();
-                return;
-            }
-
-            const q = questions[currentQuestion];
-            questionText.textContent = q.question;
-            answersContainer.innerHTML = '';
-            questionNumber.textContent = `Question ${currentQuestion + 1}/25`;
-
-            let shuffledOptions = [...q.options];
-            shuffleArray(shuffledOptions);
-
-            shuffledOptions.forEach((option, index) => {
-                const button = document.createElement('button');
-                button.textContent = String.fromCharCode(97 + index) + ". " + option;
-                button.onclick = () => checkAnswer(index === shuffledOptions.indexOf(q.options[q.correct]));
-                answersContainer.appendChild(button);
-            });
-
-            startTimer();
-        }
-
-        function checkAnswer(correct) {
-            clearInterval(timerInterval);
-            lightIndicator.style.display = 'block';
-
-            if (correct) {
-                lightIndicator.classList.add('green-light');
-                lightIndicator.classList.remove('red-light');
-                score++;
-                scoreDisplay.textContent = score;
-                setTimeout(() => lightIndicator.style.display = 'none', 500);
-            } else {
-                lightIndicator.classList.add('red-light');
-                lightIndicator.classList.remove('green-light');
-                sadEmoji.style.display = 'inline-block';
-                setTimeout(() => sadEmoji.style.display = 'none', 1000);
-                setTimeout(() => lightIndicator.style.display = 'none', 1000);
-            }
-
-            currentQuestion++;
-            loadQuestion();
-        }
-
-        function startTimer() {
-            let timeLeft = 25;
+        timerInterval = setInterval(() => {
+            timeLeft--;
             timerDisplay.textContent = timeLeft;
-            analogHand.style.transform = `rotate(0deg)`;
+            analogHand.style.transform = `rotate(${(25 - timeLeft) * 14.4}deg)`;
 
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                timerDisplay.textContent = timeLeft;
-                analogHand.style.transform = `rotate(${(25 - timeLeft) * 14.4}deg)`;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                checkAnswer(false);
+            }
+        }, 1000);
+    }
 
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    checkAnswer(false);
-                }
-            }, 1000);
-        }
+    startQuizButton.addEventListener('click', startQuiz);
+    restartQuizButton.addEventListener('click', restartQuiz);
+</script>
 
-        startQuizButton.addEventListener('click', startQuiz);
-        restartQuizButton.addEventListener('click', restartQuiz);
-    </script>
 </body>
 </html>
