@@ -168,9 +168,6 @@
         <div class="header">
             <div style="display: flex; justify-content: space-between; padding: 0 20px;">
                 <h3 id="question-number">Question 1/25</h3>
-                <label>
-                    <input type="checkbox" id="translate-toggle"> Translate
-                </label>
             </div>
         </div>
         <div class="timer">
@@ -233,7 +230,12 @@
         const lightIndicator = document.getElementById('light-indicator');
         const sadEmoji = document.getElementById('sad-emoji');
 
-        const translateToggle = document.getElementById('translate-toggle');
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+        }
 
         function startQuiz() {
             currentQuestion = 0;
@@ -266,10 +268,13 @@
             answersContainer.innerHTML = '';
             questionNumber.textContent = `Question ${currentQuestion + 1}/25`;
 
-            q.options.forEach((option, index) => {
+            let shuffledOptions = [...q.options];
+            shuffleArray(shuffledOptions);
+
+            shuffledOptions.forEach((option, index) => {
                 const button = document.createElement('button');
-                button.textContent = option;
-                button.onclick = () => checkAnswer(index === q.correct);
+                button.textContent = String.fromCharCode(97 + index) + ". " + option;
+                button.onclick = () => checkAnswer(index === shuffledOptions.indexOf(q.options[q.correct]));
                 answersContainer.appendChild(button);
             });
 
@@ -317,11 +322,6 @@
 
         startQuizButton.addEventListener('click', startQuiz);
         restartQuizButton.addEventListener('click', restartQuiz);
-
-        translateToggle.addEventListener('change', () => {
-            const isEnglish = translateToggle.checked;
-            // Translation functionality goes here...
-        });
     </script>
 </body>
 </html>
