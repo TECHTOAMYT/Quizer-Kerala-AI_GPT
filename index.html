@@ -3,19 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz with Timer</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>AM QUIZ FOR PSC</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #fff, #f2f2f2);
+            text-align: center;
+        }
+        h1, h2, h3 {
+            margin: 10px;
+        }
+        .welcome-page, .quiz-page, .end-page {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+
+        /* Welcome Page Styles */
+        .welcome-page h1 {
+            font-size: 3em;
+            color: #333;
+        }
+        .welcome-page h2 {
+            color: #888;
+        }
+        .animated-text {
+            font-size: 1.5em;
+            color: #ff6347;
+            animation: typing 3s steps(20, end), blink 0.5s step-end infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 4px solid;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+        .btn {
+            background: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px;
+        }
+
+        /* Quiz Page Styles */
+        .quiz-page {
+            padding: 20px;
+        }
+        .question {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+        .answers button {
+            background: #f9f9f9;
+            color: #333;
+            padding: 10px 20px;
+            border: 2px solid #ccc;
+            margin: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .answers button:hover {
+            background: #ddd;
+        }
+        .timer {
+            margin: 20px;
+            font-size: 1.5em;
+        }
+        .timer .analog {
+            width: 100px;
+            height: 100px;
+            margin: 10px auto;
+            border: 4px solid #000;
+            border-radius: 50%;
+            position: relative;
+        }
+        .timer .hand {
+            position: absolute;
+            width: 50%;
+            height: 2px;
+            background: red;
+            top: 50%;
+            left: 50%;
+            transform-origin: 0% 50%;
+            transform: rotate(0deg);
+            transition: 0.5s linear;
+        }
+
+        /* End Page */
+        .end-page {
+            padding: 20px;
+        }
+        .result {
+            font-size: 2em;
+            margin: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Quiz with Timer</h1>
-        <p id="question">Question goes here</p>
-        <input type="text" id="answer" placeholder="Your answer">
-        <button onclick="checkAnswer()">Submit</button>
-        <div id="timer">Timer: <span id="time">60</span> seconds</div>
-        <div id="score">Score: <span id="scoreValue">0</span></div>
-        <div id="result"></div>
+    <!-- Welcome Page -->
+    <div class="welcome-page active">
+        <h1>AM QUIZ FOR PSC</h1>
+        <h2>Base Version</h2>
+        <div class="animated-text">#MadewithL♥️ve</div>
+        <h3 style="color: orange; margin-top: 10px;">Made in India</h3>
+        <button class="btn" id="start-quiz">Let's Begin</button>
     </div>
-    <script src="script.js"></script>
+
+    <!-- Quiz Page -->
+    <div class="quiz-page">
+        <div class="header">
+            <div style="display: flex; justify-content: space-between; padding: 0 20px;">
+                <h3 id="question-number">Question 1/25</h3>
+                <label>
+                    <input type="checkbox" id="translate-toggle"> Translate
+                </label>
+            </div>
+        </div>
+        <div class="timer">
+            <div class="analog">
+                <div class="hand" id="analog-hand"></div>
+            </div>
+            <span id="timer-display">25</span> seconds
+        </div>
+        <div class="question" id="question-text">Question will appear here.</div>
+        <div class="answers" id="answers-container"></div>
+    </div>
+
+    <!-- End Page -->
+    <div class="end-page">
+        <h2>Quiz Completed!</h2>
+        <div class="result" id="final-score">Your Score: 0/25</div>
+        <button class="btn" id="restart-quiz">Restart Quiz</button>
+    </div>
+
+    <script>
+        /* JavaScript for Quiz Functionality */
+
+        const questions = [
+            { question: "കേരളത്തിലെ തലസ്ഥാനം?", options: ["തിരുവനന്തപുരം", "കൊച്ചി", "കൊല്ലം", "കോഴിക്കോട്"], correct: 0 },
+            { question: "ഇന്ത്യയുടെ ദേശീയ പുഷ്പം?", options: ["താമര", "ജാസ്മിൻ", "ഗുൽമോഹർ", "റോസ്"], correct: 0 },
+            // Add 1000 questions for real implementation...
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let timerInterval;
+
+        const welcomePage = document.querySelector('.welcome-page');
+        const quizPage = document.querySelector('.quiz-page');
+        const endPage = document.querySelector('.end-page');
+
+        const startQuizButton = document.getElementById('start-quiz');
+        const restartQuizButton = document.getElementById('restart-quiz');
+
+        const questionText = document.getElementById('question-text');
+        const answersContainer = document.getElementById('answers-container');
+        const timerDisplay = document.getElementById('timer-display');
+        const analogHand = document.getElementById('analog-hand');
+        const questionNumber = document.getElementById('question-number');
+        const finalScore = document.getElementById('final-score');
+
+        const translateToggle = document.getElementById('translate-toggle');
+
+        function startQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            welcomePage.classList.remove('active');
+            quizPage.classList.add('active');
+            loadQuestion();
+        }
+
+        function endQuiz() {
+            quizPage.classList.remove('active');
+            endPage.classList.add('active');
+            finalScore.textContent = `Your Score: ${score}/25`;
+        }
+
+        function restartQuiz() {
+            endPage.classList.remove('active');
+            welcomePage.classList.add('active');
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= 25) {
+                endQuiz();
+                return;
+            }
+
+            const q = questions[currentQuestion];
+            questionText.textContent = q.question;
+            answersContainer.innerHTML = '';
+            questionNumber.textContent = `Question ${currentQuestion + 1}/25`;
+
+            q.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.onclick = () => checkAnswer(index === q.correct);
+                answersContainer.appendChild(button);
+            });
+
+            startTimer();
+        }
+
+        function checkAnswer(correct) {
+            clearInterval(timerInterval);
+            if (correct) {
+                score++;
+                alert("Correct!");
+            } else {
+                alert("Wrong!");
+            }
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function startTimer() {
+            let timeLeft = 25;
+            timerDisplay.textContent = timeLeft;
+            analogHand.style.transform = `rotate(0deg)`;
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = timeLeft;
+                analogHand.style.transform = `rotate(${(25 - timeLeft) * 14.4}deg)`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    checkAnswer(false);
+                }
+            }, 1000);
+        }
+
+        startQuizButton.addEventListener('click', startQuiz);
+        restartQuizButton.addEventListener('click', restartQuiz);
+
+        translateToggle.addEventListener('change', () => {
+            const isEnglish = translateToggle.checked;
+            // Translation functionality goes here...
+        });
+    </script>
 </body>
 </html>
