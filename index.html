@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6700613757323923" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6700613757323923"
+     crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-6700613757323923">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AM QUIZ FOR PSC</title>
     <style>
-        /* Your existing styles here */
+        /* Add your existing styles here */
     </style>
 </head>
 <body>
-    <!-- Welcome Page -->
+    <!-- Add your existing HTML structure here -->
     <div class="welcome-page active">
         <h1>AM QUIZ FOR PSC</h1>
         <h2>Base Version</h2>
@@ -19,23 +20,21 @@
         <h3 style="color: orange; margin-top: 10px;">Made in India</h3>
         <button class="btn" id="start-quiz">Let's Begin</button>
     </div>
-
-    <!-- Quiz Page -->
     <div class="quiz-page">
         <div class="header">
-            <h3 id="question-number">Question 1/25</h3>
+            <div style="display: flex; justify-content: space-between; padding: 0 20px;">
+                <h3 id="question-number">Question 1/25</h3>
+            </div>
         </div>
         <div class="timer">
+            <div class="analog">
+                <div class="hand" id="analog-hand"></div>
+            </div>
             <span id="timer-display">25</span> seconds
         </div>
         <div class="question" id="question-text">Question will appear here.</div>
         <div class="answers" id="answers-container"></div>
-        <div class="score-board">
-            Score: <span id="score-display">0</span>/25
-        </div>
     </div>
-
-    <!-- End Page -->
     <div class="end-page">
         <h2>Quiz Completed!</h2>
         <div class="result" id="final-score">Your Score: 0/25</div>
@@ -54,32 +53,31 @@
 
         const startQuizButton = document.getElementById('start-quiz');
         const restartQuizButton = document.getElementById('restart-quiz');
+
         const questionText = document.getElementById('question-text');
         const answersContainer = document.getElementById('answers-container');
         const timerDisplay = document.getElementById('timer-display');
+        const analogHand = document.getElementById('analog-hand');
         const questionNumber = document.getElementById('question-number');
         const finalScore = document.getElementById('final-score');
-        const scoreDisplay = document.getElementById('score-display');
 
-        async function loadQuestions() {
+        async function fetchQuestions() {
             try {
                 const response = await fetch('quin.txt');
                 const text = await response.text();
-                questions = JSON.parse(`[${text}]`);
-                console.log('Questions loaded:', questions);
+                questions = JSON.parse(text);
             } catch (error) {
-                console.error('Error loading questions:', error);
+                console.error("Error fetching questions:", error);
+                alert("Could not load questions. Please try again later.");
             }
         }
 
         function startQuiz() {
             currentQuestion = 0;
             score = 0;
-            scoreDisplay.textContent = score;
-            shuffleArray(questions); // Shuffle questions
+            loadQuestion();
             welcomePage.classList.remove('active');
             quizPage.classList.add('active');
-            loadQuestion();
         }
 
         function endQuiz() {
@@ -106,7 +104,7 @@
 
             q.options.forEach((option, index) => {
                 const button = document.createElement('button');
-                button.textContent = option;
+                button.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
                 button.onclick = () => checkAnswer(index === q.correct);
                 answersContainer.appendChild(button);
             });
@@ -116,10 +114,7 @@
 
         function checkAnswer(correct) {
             clearInterval(timerInterval);
-            if (correct) {
-                score++;
-                scoreDisplay.textContent = score;
-            }
+            if (correct) score++;
             currentQuestion++;
             loadQuestion();
         }
@@ -127,10 +122,12 @@
         function startTimer() {
             let timeLeft = 25;
             timerDisplay.textContent = timeLeft;
+            analogHand.style.transform = `rotate(0deg)`;
 
             timerInterval = setInterval(() => {
                 timeLeft--;
                 timerDisplay.textContent = timeLeft;
+                analogHand.style.transform = `rotate(${(25 - timeLeft) * 14.4}deg)`;
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     checkAnswer(false);
@@ -138,17 +135,11 @@
             }, 1000);
         }
 
-        function shuffleArray(arr) {
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-        }
-
-        startQuizButton.addEventListener('click', () => {
-            loadQuestions().then(startQuiz);
-        });
+        startQuizButton.addEventListener('click', startQuiz);
         restartQuizButton.addEventListener('click', restartQuiz);
+
+        // Fetch questions on page load
+        fetchQuestions();
     </script>
 </body>
 </html>
