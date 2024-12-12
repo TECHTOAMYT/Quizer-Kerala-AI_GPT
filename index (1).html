@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6700613757323923"
+     crossorigin="anonymous"></script>
+
+    <meta name="google-adsense-account" content="ca-pub-6700613757323923">
+
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AM QUIZ FOR PSC</title>
+    <style>
+        /* General Styles */
+        body {
+margin: 0;
+      padding: 0;
+      background: url('animated_background.gif') no-repeat center center fixed; /* Replace 'your-image.gif' with your GIF file path */
+      background-size: cover; /* Ensures the GIF covers the entire screen */
+      height: 100vh; /* Full viewport height */
+
+            
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #fff, #f2f2f2);
+            text-align: center;
+        }
+        h1, h2, h3 {
+            margin: 10px;
+        }
+
+        .welcome-page, .quiz-page, .end-page {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+
+        /* Welcome Page Styles */
+        .welcome-page h1 {
+            font-size: 3em;
+            color: #333;
+        }
+        .welcome-page h2 {
+            color: #888;
+        }
+        .animated-text {
+            font-size: 1.5em;
+            color: #ff6347;
+            animation: typing 3s steps(20, end), blink 0.5s step-end infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 4px solid;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        .btn {
+            background: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px;
+        }
+
+        /* Quiz Page Styles */
+        .quiz-page {
+            padding: 20px;
+        }
+        .question {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+        .answers button {
+            background: #f9f9f9;
+            color: #333;
+            padding: 10px 20px;
+            border: 2px solid #ccc;
+            margin: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .answers button:hover {
+            background: #ddd;
+        }
+        .timer {
+            margin: 20px;
+            font-size: 1.5em;
+        }
+        .timer .analog {
+            width: 100px;
+            height: 100px;
+            margin: 10px auto;
+            border: 4px solid #000;
+            border-radius: 50%;
+            position: relative;
+        }
+        .timer .hand {
+            position: absolute;
+            width: 50%;
+            height: 2px;
+            background: red;
+            top: 50%;
+            left: 50%;
+            transform-origin: 0% 50%;
+            transform: rotate(0deg);
+            transition: 0.5s linear;
+        }
+
+        /* End Page */
+        .end-page {
+            padding: 20px;
+        }
+        .result {
+            font-size: 2em;
+            margin: 20px;
+        }
+
+        /* Light Indicator Styles */
+        .light-indicator {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 20px auto;
+            background-color: grey;
+            animation: blink-animation 1s infinite alternate;
+            display: none;
+        }
+        .green-light {
+            background-color: green;
+        }
+        .red-light {
+            background-color: red;
+        }
+
+        /* Sad Emoji Animation */
+        .sad-emoji {
+            font-size: 50px;
+            display: none;
+            animation: sad-emoji-animation 1s ease-out;
+        }
+        @keyframes sad-emoji-animation {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Scoreboard */
+        .score-board {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Page -->
+    <div class="welcome-page active">
+        <h1>AM QUIZ FOR PSC</h1>
+        <h2>Base Version</h2>
+        <div class="animated-text">#MadewithL♥️ve</div>
+        <h3 style="color: orange; margin-top: 10px;">Made in India</h3>
+        <button class="btn" id="start-quiz">Let's Begin</button>
+    </div>
+
+    <!-- Quiz Page -->
+    <div class="quiz-page">
+        <div class="header">
+            <div style="display: flex; justify-content: space-between; padding: 0 20px;">
+                <h3 id="question-number">Question 1/25</h3>
+            </div>
+        </div>
+        <div class="timer">
+            <div class="analog">
+                <div class="hand" id="analog-hand"></div>
+            </div>
+            <span id="timer-display">25</span> seconds
+        </div>
+        <div class="question" id="question-text">Question will appear here.</div>
+        <div class="answers" id="answers-container"></div>
+
+        <!-- Light Indicator and Sad Emoji -->
+        <div class="light-indicator" id="light-indicator"></div>
+        <div class="sad-emoji" id="sad-emoji">😢</div>
+
+        <!-- Scoreboard -->
+        <div class="score-board">
+            Score: <span id="score-display">0</span>/25
+        </div>
+    </div>
+
+    <!-- End Page -->
+    <div class="end-page">
+        <h2>Quiz Completed!</h2>
+        <div class="result" id="final-score">Your Score: 0/25</div>
+        <button class="btn" id="restart-quiz">Restart Quiz</button>
+    </div>
+
+    <script>
+        /* JavaScript for Quiz Functionality */
+
+        const questions = [
+            { question: "കേരളത്തിന്റെ ഔദ്യോഗിക ഭാഷ?", options: ["മലയാളം", "ഇംഗ്ലീഷ്", "ഹിന്ദി", "தமிழ்"], correct: 0 },
+            { question: "ഇന്ത്യയുടെ ദേശീയ പുഷ്പം?", options: ["താമര", "ജാസ്മിൻ", "ഗുൽമോഹർ", "റോസ്"], correct: 0 },
+            { question: "ഇന്ത്യയിലെ ഏറ്റവും വലിയ സംസ്ഥാനത്ത് ഏത്?", options: ["രാജസ്ഥാന", "ഉത്തർപ്രദേശ്", "മഹാരാഷ്ട്ര", "മധ്യപ്രദേശ്"], correct: 0 },
+            { question: "കേരളത്തിലെ ദൃശ്യമാർഗ്ഗം എവിടെയാണ്?", options: ["തിരുവനന്തപുരം", "കോട്ടയം", "പാലക്കാട്", "കൊച്ചി"], correct: 3 },
+            { question: "പാർലമെന്റിന്റെ തിരഞ്ഞെടുപ്പ് എന്തൊക്കെയാണ്?", options: ["ലോകസഭ", "രാജ്യസഭ", "നീതിമനോര", "സമവായ"], correct: 0 },
+            { question: "ഇന്ത്യയുടെ സ്വാതന്ത്ര്യ ദിനം ഏതാണ്?", options: ["ആഗസ്റ്റ് 15", "ജനുവരി 26", "ഒക്റ്റോബർ 2", "മെയ് 1"], correct: 0 },
+    { question: "ഇന്ത്യയുടെ തലസ്ഥാനം ഏതാണ്?", options: ["ഡൽഹി", "മുംബൈ", "കൊൽക്കത്ത", "ചെന്നൈ"], correct: 0 },
+    { question: "ഇന്ത്യയുടെ ദേശീയ ഗാനം രചിച്ചത് ആരാണ്?", options: ["രബീന്ദ്രനാഥ് ടാഗോർ", "ബാങ്കിം ചന്ദ്ര ചാറ്റർജീ", "മഹാത്മാ ഗാന്ധി", "ജവാഹർലാൽ നെഹ്റു"], correct: 0 },
+    { question: "ഇന്ത്യയുടെ ദേശീയ മൃഗം ഏതാണ്?", options: ["കടുവ", "ആന", "സിംഹം", "പുള്ളിപ്പുലി"], correct: 0 },
+    { question: "ഇന്ത്യയുടെ ദേശീയ പക്ഷി ഏതാണ്?", options: ["മയിൽ", "കാക്ക", "കുരുവി", "കഴുകൻ"], correct: 0 },
+    { question: "ഇന്ത്യയുടെ സ്വാതന്ത്ര്യ ദിനം എപ്പോഴാണ്?", options: ["1947", "1950", "1930", "1942"], correct: 0 },
+    { question: "കേരളത്തിന്റെ ഔദ്യോഗിക ഭാഷ ഏതാണ്?", options: ["മലയാളം", "ഇംഗ്ലീഷ്", "തമിഴ്", "ഹിന്ദി"], correct: 0 },
+    { question: "ഇന്ത്യയുടെ ദേശീയ പുഷ്പം ഏതാണ്?", options: ["താമര", "ഗുലാബ്", "സുന്ദരി", "ചെമ്പരത്തി"], correct: 0 },
+    { question: "ഇന്ത്യയിലെ ഏറ്റവും വലിയ സംസ്ഥാനം ഏതാണ്?", options: ["രാജസ്ഥാന", "ഉത്തർപ്രദേശ്", "മധ്യപ്രദേശ്", "തമിഴ്നാട്"], correct: 0 },
+    { question: "കേരളത്തിന്റെ ഏറ്റവും വലിയ ജില്ല ഏതാണ്?", options: ["പാലക്കാട്", "തൃശൂർ", "കോഴിക്കോട്", "കാസർഗോഡ്"], correct: 0 },
+    { question: "കേരളത്തിലെ ഏറ്റവും ചെറിയ ജില്ല ഏതാണ്?", options: ["ആലപ്പുഴ", "വയനാട്", "ഇടുക്കി", "കോട്ടയം"], correct: 1 },
+    { question: "ഇന്ത്യയുടെ ആദ്യ പ്രധാനമന്ത്രി ആരായിരുന്നു?", options: ["ജവാഹർലാൽ നെഹ്റു", "ഗാന്ധിജി", "ഇന്ദിരാ ഗാന്ധി", "വല്ലഭായ് പട്ടേൽ"], correct: 0 },
+    { question: "ഇന്ത്യയുടെ ദേശീയ ഗാനം ഏതാണ്?", options: ["ജന ഗണ മന", "വന്ദേ മാതരം", "സаре ജഹാൻ സെ അച്ഛാ", "മറൈറൈ ഗാന"], correct: 0 },
+    { question: "കേരളത്തിന്റെ നദികളുടെ സംഖ്യ എത്രയാണ്?", options: ["44", "28", "30", "52"], correct: 0 },
+    { question: "കേരളത്തിന്റെ ചലച്ചിത്ര നഗരം എവിടെയാണ്?", options: ["കൊച്ചി", "പാലക്കാട്", "കോട്ടയം", "തൃശൂർ"], correct: 0 },
+    { question: "കേരളത്തിലെ ഏറ്റവും നീളം കൂടിയ നദി ഏതാണ്?", options: ["പെരിയാർ", "ഭരതപ്പുഴ", "ചാലിയാർ", "പമ്പ"], correct: 0 },
+    { question: "ഇന്ത്യയുടെ ആദ്യ രാഷ്ട്രപതി ആരായിരുന്നു?", options: ["ഡോ. രാജേന്ദ്ര പ്രസാദ്", "സർദാർ പട്ടേൽ", "ജവാഹർലാൽ നെഹ്റു", "ഡോ. ബി.ആർ. അംബേദ്കർ"], correct: 0 },
+    { question: "ഇന്ത്യയിലെ ഏറ്റവും ഉയരമുള്ള കൊടുമുടി ഏതാണ്?", options: ["കഞ്ചൻജംഗ", "എവറസ്റ്റ്", "അൻനപുര്ണ", "ലോട്ട്സെ"], correct: 0 },
+    { question: "ഇന്ത്യയുടെ ദേശീയ കായികം ഏതാണ്?", options: ["ഹോക്കി", "ക്രിക്കറ്റ്", "ഫുട്ബോൾ", "കബഡി"], correct: 0 },
+    { question: "കേരളത്തിൽ സാക്ഷരത നേടിയ ആദ്യ ജില്ല ഏതാണ്?", options: ["എറണാകുളം", "കോഴിക്കോട്", "തിരുവനന്തപുരം", "ആലപ്പുഴ"], correct: 0 },
+   
+    // Add more questions as required to make up to 100
+];
+
+        let currentQuestion = 0;
+    let score = 0;
+    let timerInterval;
+
+    const welcomePage = document.querySelector('.welcome-page');
+    const quizPage = document.querySelector('.quiz-page');
+    const endPage = document.querySelector('.end-page');
+
+    const startQuizButton = document.getElementById('start-quiz');
+    const restartQuizButton = document.getElementById('restart-quiz');
+
+    const questionText = document.getElementById('question-text');
+    const answersContainer = document.getElementById('answers-container');
+    const timerDisplay = document.getElementById('timer-display');
+    const analogHand = document.getElementById('analog-hand');
+    const questionNumber = document.getElementById('question-number');
+    const finalScore = document.getElementById('final-score');
+    const scoreDisplay = document.getElementById('score-display');
+    const lightIndicator = document.getElementById('light-indicator');
+    const sadEmoji = document.getElementById('sad-emoji');
+
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+    }
+
+    function startQuiz() {
+        currentQuestion = 0;
+        score = 0;
+        scoreDisplay.textContent = score;
+        shuffleArray(questions); // Shuffle the question order here.
+        welcomePage.classList.remove('active');
+        quizPage.classList.add('active');
+        loadQuestion();
+    }
+
+    function endQuiz() {
+        quizPage.classList.remove('active');
+        endPage.classList.add('active');
+        finalScore.textContent = `Your Score: ${score}/${questions.length}`;
+    }
+
+    function restartQuiz() {
+        endPage.classList.remove('active');
+        welcomePage.classList.add('active');
+    }
+
+    function loadQuestion() {
+        if (currentQuestion >= questions.length) {
+            endQuiz();
+            return;
+        }
+
+        const q = questions[currentQuestion];
+        questionText.textContent = q.question;
+        answersContainer.innerHTML = '';
+        questionNumber.textContent = `Question ${currentQuestion + 1}/${questions.length}`;
+
+        let shuffledOptions = [...q.options];
+        shuffleArray(shuffledOptions);
+
+        shuffledOptions.forEach((option, index) => {
+            const button = document.createElement('button');
+            button.textContent = String.fromCharCode(97 + index) + ". " + option;
+            button.onclick = () => checkAnswer(index === shuffledOptions.indexOf(q.options[q.correct]));
+            answersContainer.appendChild(button);
+        });
+
+        startTimer();
+    }
+
+    function checkAnswer(correct) {
+        clearInterval(timerInterval);
+        lightIndicator.style.display = 'block';
+
+        if (correct) {
+            lightIndicator.classList.add('green-light');
+            lightIndicator.classList.remove('red-light');
+            score++;
+            scoreDisplay.textContent = score;
+            setTimeout(() => lightIndicator.style.display = 'none', 500);
+        } else {
+            lightIndicator.classList.add('red-light');
+            lightIndicator.classList.remove('green-light');
+            sadEmoji.style.display = 'inline-block';
+            setTimeout(() => sadEmoji.style.display = 'none', 1000);
+            setTimeout(() => lightIndicator.style.display = 'none', 1000);
+        }
+
+        currentQuestion++;
+        loadQuestion();
+    }
+
+    function startTimer() {
+        let timeLeft = 25;
+        timerDisplay.textContent = timeLeft;
+        analogHand.style.transform = `rotate(0deg)`;
+
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            timerDisplay.textContent = timeLeft;
+            analogHand.style.transform = `rotate(${(25 - timeLeft) * 14.4}deg)`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                checkAnswer(false);
+            }
+        }, 1000);
+    }
+
+    startQuizButton.addEventListener('click', startQuiz);
+    restartQuizButton.addEventListener('click', restartQuiz);
+</script>
+
+</body>
+</html>
