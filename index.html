@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+
 <script src="script.js"></script>
 
 
@@ -177,6 +179,13 @@ margin: 0;
         }
     </style>
 </head>
+<body class="light-mode">
+    <div class="toggle-container">
+        <div class="toggle" id="themeToggle">
+            <div class="toggle-slider"></div>
+        </div>
+    </div>
+    
 <body>
 
 
@@ -376,11 +385,87 @@ margin: 0;
 </script>
 
 
+    <style>
+        /* Add styles for the toggle button */
+        .toggle-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .toggle {
+            width: 60px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle-slider {
+            width: 26px;
+            height: 26px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle.dark-mode .toggle-slider {
+            transform: translateX(30px);
+        }
+
+        body.light-mode {
+            background: #f2f2f2;
+            color: #333;
+        }
+
+        body.dark-mode {
+            background: #333;
+            color: #fff;
+        }
+    </style>
+    
+
 </head>
-<body class="light-mode">
-  <div class="toggle-container">
-    <div class="toggle" id="themeToggle">
-      <div class="toggle-slider"></div>
+
+<script>
+        // Toggle between light and dark modes
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeToggle.classList.add('dark-mode');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeToggle.classList.remove('dark-mode');
+            }
+        });
+    </script>
+
+<script>
+        // Toggle between light and dark modes
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeToggle.classList.add('dark-mode');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeToggle.classList.remove('dark-mode');
+            }
+        });
+    </script>
 
 </body>
 </html>
