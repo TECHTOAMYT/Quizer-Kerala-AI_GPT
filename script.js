@@ -1,3 +1,8 @@
+timerAudio.onloadeddata = () => {
+    console.log("Audio is loaded and ready to play");
+};
+
+
 // Timer and audio logic
 const timerDisplay = document.getElementById('timer-display');
 const timerAudio = document.getElementById('timerAudio');
