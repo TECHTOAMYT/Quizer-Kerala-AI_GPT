@@ -77,7 +77,7 @@ speechSynthesis.onvoiceschanged = populateVoices;
 
 
 
-/ Add this line to get a reference to the "gameovers.mp3" audio
+// Add this line to get a reference to the "gameovers.mp3" audio
 const gameOverAudio = document.getElementById('gameOverAudio');
 
 // Modify the endQuiz function to play the game over sound
