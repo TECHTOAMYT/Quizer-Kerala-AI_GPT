@@ -1,3 +1,42 @@
+// Timer and audio logic
+const timerDisplay = document.getElementById('timer-display');
+const timerAudio = document.getElementById('timerAudio');
+
+let timerInterval;
+
+function startTimer() {
+    let timeLeft = 25;
+    timerDisplay.textContent = timeLeft;
+
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = timeLeft;
+
+        // Play timer sound at 9 seconds
+        if (timeLeft === 9) {
+            timerAudio.play();
+        }
+
+        // Stop timer sound at 1 second
+        if (timeLeft === 1) {
+            timerAudio.pause();
+            timerAudio.currentTime = 0; // Reset the audio
+        }
+
+        // Stop timer when it reaches 0
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+        }
+    }, 1000);
+}
+
+// Start the timer
+startTimer();
+
+
+
+
+
 function checkAnswer(correct) {
     clearInterval(timerInterval);
     lightIndicator.style.display = 'block';
