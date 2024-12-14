@@ -1,3 +1,40 @@
+function checkAnswer(correct) {
+    clearInterval(timerInterval);
+    lightIndicator.style.display = 'block';
+
+    const wrongAudio = document.getElementById('wrongAudio');
+    const rightAudio = document.getElementById('rightAudio');
+
+    if (correct) {
+        lightIndicator.classList.add('green-light');
+        lightIndicator.classList.remove('red-light');
+        score++;
+        scoreDisplay.textContent = score;
+
+        // Play the correct answer sound
+        rightAudio.play();
+
+        setTimeout(() => lightIndicator.style.display = 'none', 500);
+    } else {
+        lightIndicator.classList.add('red-light');
+        lightIndicator.classList.remove('green-light');
+        sadEmoji.style.display = 'inline-block';
+
+        // Play the wrong answer sound
+        wrongAudio.play();
+
+        setTimeout(() => sadEmoji.style.display = 'none', 1000);
+        setTimeout(() => lightIndicator.style.display = 'none', 1000);
+    }
+
+    currentQuestion++;
+    loadQuestion();
+}
+
+
+
+
+
 // Populate available voices in a dropdown
 function populateVoices() {
   const voiceSelect = document.getElementById('voiceSelect');
@@ -62,42 +99,3 @@ function restartQuiz() {
     gameOverAudio.pause();
     gameOverAudio.currentTime = 0;
 }
-
-
-
-
-
-
-function checkAnswer(correct) {
-    clearInterval(timerInterval);
-    lightIndicator.style.display = 'block';
-
-    const wrongAudio = document.getElementById('wrongAudio');
-    const rightAudio = document.getElementById('rightAudio');
-
-    if (correct) {
-        lightIndicator.classList.add('green-light');
-        lightIndicator.classList.remove('red-light');
-        score++;
-        scoreDisplay.textContent = score;
-
-        // Play the correct answer sound
-        rightAudio.play();
-
-        setTimeout(() => lightIndicator.style.display = 'none', 500);
-    } else {
-        lightIndicator.classList.add('red-light');
-        lightIndicator.classList.remove('green-light');
-        sadEmoji.style.display = 'inline-block';
-
-        // Play the wrong answer sound
-        wrongAudio.play();
-
-        setTimeout(() => sadEmoji.style.display = 'none', 1000);
-        setTimeout(() => lightIndicator.style.display = 'none', 1000);
-    }
-
-    currentQuestion++;
-    loadQuestion();
-}
-
