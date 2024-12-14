@@ -1,3 +1,44 @@
+// JavaScript for Timer Sound
+
+const timerAudio = document.getElementById('timerAudio'); // Make sure this matches your <audio> element ID
+let timerInterval;
+
+function startTimer() {
+    let timeLeft = 25; // Starting timer at 25 seconds
+    timerAudio.currentTime = 0; // Reset the audio at the start
+
+    // Display the timer countdown on the page (adjust as necessary)
+    const timerDisplay = document.getElementById('timer-display');
+    timerDisplay.textContent = timeLeft;
+
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = timeLeft;
+
+        // Play the timer sound when it reaches 9 seconds
+        if (timeLeft === 9) {
+            timerAudio.play();
+        }
+
+        // Stop the timer sound when it reaches 1 second
+        if (timeLeft === 1) {
+            timerAudio.pause();
+            timerAudio.currentTime = 0; // Reset audio to the start
+        }
+
+        // When the timer reaches 0, stop it and optionally perform other actions
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            // Add any additional logic for timer expiry if needed
+        }
+    }, 1000); // Update every second
+}
+
+// Example of triggering the timer start
+// startTimer(); // You can call this function when needed, like when starting a quiz question
+
+
+
 timerAudio.onloadeddata = () => {
     console.log("Audio is loaded and ready to play");
 };
