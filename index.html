@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+<script src="script.js"></script> <!-- Link to your external JS file -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6700613757323923"
      crossorigin="anonymous"></script>
 
@@ -358,6 +358,21 @@ margin: 0;
     startQuizButton.addEventListener('click', startQuiz);
     restartQuizButton.addEventListener('click', restartQuiz);
 </script>
+
+     <div>
+                    <label for="voiceSelect">Choose a Voice:</label>
+                    <select id="voiceSelect"></select>
+                    <br><br>
+                    <button id="speakButton">🔊 Speak</button>
+                </div>
+
+                <div>
+                    <audio id="wrongAudio" src="wrongs.mp3"></audio>
+                    <audio id="rightAudio" src="rights.mp3"></audio>
+                </div>
+            </p>
+</div>
+     
 
 </body>
 </html>
