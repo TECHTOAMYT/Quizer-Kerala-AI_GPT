@@ -1,3 +1,27 @@
+// Add this to your existing script.js
+
+// Add this line to get a reference to the "gameovers.mp3" audio
+const gameOverAudio = document.getElementById('gameOverAudio');
+
+// Modify the endQuiz function to play the game over sound
+function endQuiz() {
+    quizPage.classList.remove('active');
+    endPage.classList.add('active');
+    finalScore.textContent = `Your Score: ${score}/${questions.length}`;
+    
+    // Play game over sound when quiz ends
+    gameOverAudio.play();
+}
+
+// Modify the restartQuiz function to stop the game over sound
+function restartQuiz() {
+    endPage.classList.remove('active');
+    welcomePage.classList.add('active');
+    
+    // Stop and reset the game over sound when the quiz is restarted
+    gameOverAudio.pause();
+    gameOverAudio.currentTime = 0;
+}
 
 
 
